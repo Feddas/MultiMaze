@@ -4,12 +4,9 @@
 3. mix? some players corner analog, some drag.
 
 #TODO
-DONE - Place player at maze start
-DONE - find longest path during maze generation
-DONE - use longest path to place end
-- factor RollerBall out of standard assets
+DONE - factor RollerBall out of standard assets
 - remove RollerBall jump
-- replace RollerBall mesh with basic sphere
+DONE - replace RollerBall mesh with basic sphere
 - Create 4 Color materials for RollerBall
 
 #TODO multiplayer positioning
