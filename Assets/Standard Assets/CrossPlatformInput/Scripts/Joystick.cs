@@ -25,7 +25,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 		CrossPlatformInputManager.VirtualAxis m_HorizontalVirtualAxis; // Reference to the joystick in the cross platform input
 		CrossPlatformInputManager.VirtualAxis m_VerticalVirtualAxis; // Reference to the joystick in the cross platform input
 
-		void Start() //OnEnable()
+		void Start() // SHFEAT changed from OnEnable() SHAWFE
 		{
 			m_StartPos = transform.position;
 			CreateVirtualAxes();
@@ -74,17 +74,17 @@ namespace UnityStandardAssets.CrossPlatformInput
 			if (m_UseX)
 			{
 				int delta = (int)(data.position.x - m_StartPos.x);
-				delta = Mathf.Clamp(delta, - MovementRange, MovementRange);
 				newPos.x = delta;
 			}
 
 			if (m_UseY)
 			{
 				int delta = (int)(data.position.y - m_StartPos.y);
-				delta = Mathf.Clamp(delta, -MovementRange, MovementRange);
 				newPos.y = delta;
 			}
-			transform.position = new Vector3(m_StartPos.x + newPos.x, m_StartPos.y + newPos.y, m_StartPos.z + newPos.z);
+
+            // SHFEAT replaced square Mathf.Clamp with circular Vector3.ClampMagnitude
+            transform.position = Vector3.ClampMagnitude(newPos, MovementRange) + m_StartPos;
 			UpdateVirtualAxes(transform.position);
 		}
 

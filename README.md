@@ -4,13 +4,12 @@
 3. mix? some players corner analog, some drag.
 
 #TODO
-DONE - factor RollerBall out of standard assets
 - remove RollerBall jump
-DONE - replace RollerBall mesh with basic sphere
-- Create 4 Color materials for RollerBall
+DONE - modify default mobile stick using video on http://forum.unity3d.com/threads/unity-5-new-mobile-assets-joystick-problem.307627/
 
 #TODO multiplayer positioning
 - find 4 paths that are all the same distance from the start
+- Create 4 Color materials for RollerBall
 - set start cell as the finish cell
 - Make sure those 4 paths are at least 3 cells apart, so fingers don't jam against other players if using touch movement.
 
