@@ -35,12 +35,11 @@ public class Maze : MonoBehaviour
 
     }
 
-    public IntVector2 RandomCoordinates
+    public static IntVector2 RandomCoordinates(IntVector2 maxSize)
     {
-        get
-        {
-            return new IntVector2(Random.Range(0, size.x), Random.Range(0, size.z));
-        }
+        return new IntVector2(
+            Random.Range(0, maxSize.x),
+            Random.Range(0, maxSize.z));
     }
 
     /// <summary>
@@ -58,7 +57,11 @@ public class Maze : MonoBehaviour
     }
     private void DoFirstGenerationStep(List<MazeCell> activeCells)
     {
-        activeCells.Add(CreateCell(RandomCoordinates));
+        DoFirstGenerationStep(activeCells, RandomCoordinates(size));
+    }
+    private void DoFirstGenerationStep(List<MazeCell> activeCells, IntVector2 startingCell)
+    {
+        activeCells.Add(CreateCell(startingCell));
     }
 
     // each cell tries to move a random MazeDirection until it collides
@@ -123,6 +126,21 @@ public class Maze : MonoBehaviour
         // cells where a side may be open to add a new cell
         List<MazeCell> activeCells = new List<MazeCell>();
         DoFirstGenerationStep(activeCells);
+        while (activeCells.Count > 0)
+        {
+            yield return delay;
+            DoNextGenerationStep(activeCells);
+        }
+    }
+
+    public IEnumerator Generate(IntVector2 startCoordinate)
+    {
+        WaitForSeconds delay = new WaitForSeconds(generationStepDelay);
+        cells = new MazeCell[size.x, size.z];
+
+        // cells where a side may be open to add a new cell
+        List<MazeCell> activeCells = new List<MazeCell>();
+        DoFirstGenerationStep(activeCells, startCoordinate);
         while (activeCells.Count > 0)
         {
             yield return delay;
