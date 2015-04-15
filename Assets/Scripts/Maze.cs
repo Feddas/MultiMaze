@@ -5,7 +5,6 @@ using System.Collections.Generic;
 /// <summary>
 /// Growing Tree algorithm
 /// created from tutorial http://catlikecoding.com/unity/tutorials/maze/
-/// TODO: create git repo
 /// 
 /// Alternate Maze Alorithms:
 /// http://www.cgl.uwaterloo.ca/~csk/projects/mazes/
@@ -17,9 +16,9 @@ public class Maze : MonoBehaviour
 
     public MazeCell cellPrefab;
 
-    public float generationStepDelay = 0.01f;
     public MazePassage passagePrefab;
     public MazeWall wallPrefab;
+    public GameObject mazeFinish;
 
     private MazeCell[,] cells;
 
@@ -55,6 +54,7 @@ public class Maze : MonoBehaviour
     {
         return cells[coordinates.x, coordinates.z];
     }
+
     private void DoFirstGenerationStep(List<MazeCell> activeCells)
     {
         DoFirstGenerationStep(activeCells, RandomCoordinates(size));
@@ -86,6 +86,7 @@ public class Maze : MonoBehaviour
             if (neighbor == null) // connect a new cell
             {
                 neighbor = CreateCell(coordinates);
+                trackDistance(currentCell, neighbor);
                 CreatePassage(currentCell, neighbor, direction);
                 activeCells.Add(neighbor);
             }
@@ -98,6 +99,26 @@ public class Maze : MonoBehaviour
         {
             CreateWall(currentCell, null, direction);
         }
+    }
+
+    private int maxDistance;
+    private IntVector2 maxDistanceCell;
+
+    private void trackDistance(MazeCell parent, MazeCell newCell)
+    {
+        newCell.DistanceFromFirstCell = parent.DistanceFromFirstCell + 1;
+        if (newCell.DistanceFromFirstCell > maxDistance)
+        {
+            maxDistance = newCell.DistanceFromFirstCell;
+            maxDistanceCell = newCell.coordinates;
+        }
+    }
+    private void addChild(MazeCell toCell, GameObject childToAdd)
+    {
+        GameObject child = Instantiate(childToAdd) as GameObject;
+        child.name = childToAdd.name;
+        child.transform.parent = toCell.gameObject.transform;
+        child.transform.localPosition = new Vector3(0f, 0f, 0f);
     }
     private void CreatePassage(MazeCell cell, MazeCell otherCell, MazeDirection direction)
     {
@@ -118,24 +139,8 @@ public class Maze : MonoBehaviour
         }
     }
 
-    public IEnumerator Generate()
+    public void Generate(IntVector2 startCoordinate)
     {
-        WaitForSeconds delay = new WaitForSeconds(generationStepDelay);
-        cells = new MazeCell[size.x, size.z];
-
-        // cells where a side may be open to add a new cell
-        List<MazeCell> activeCells = new List<MazeCell>();
-        DoFirstGenerationStep(activeCells);
-        while (activeCells.Count > 0)
-        {
-            yield return delay;
-            DoNextGenerationStep(activeCells);
-        }
-    }
-
-    public IEnumerator Generate(IntVector2 startCoordinate)
-    {
-        WaitForSeconds delay = new WaitForSeconds(generationStepDelay);
         cells = new MazeCell[size.x, size.z];
 
         // cells where a side may be open to add a new cell
@@ -143,19 +148,12 @@ public class Maze : MonoBehaviour
         DoFirstGenerationStep(activeCells, startCoordinate);
         while (activeCells.Count > 0)
         {
-            yield return delay;
             DoNextGenerationStep(activeCells);
         }
-    }
 
-    //	public void Generate () {
-    //		cells = new MazeCell[sizeX, sizeZ];
-    //		for (int x = 0; x < sizeX; x++) {
-    //			for (int z = 0; z < sizeZ; z++) {
-    //				CreateCell(x, z);
-    //			}
-    //		}
-    //	}
+        Debug.Log("Max cell " + maxDistanceCell.x + "," + maxDistanceCell.z + " is " + maxDistance);
+        addChild(cells[maxDistanceCell.x, maxDistanceCell.z], mazeFinish);
+    }
 
     private MazeCell CreateCell(IntVector2 coordinates)
     {

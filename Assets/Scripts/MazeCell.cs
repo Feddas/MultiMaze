@@ -4,6 +4,7 @@ using System.Collections;
 public class MazeCell : MonoBehaviour
 {
     public IntVector2 coordinates;
+    public int DistanceFromFirstCell;
 
     private MazeCellEdge[] edges = new MazeCellEdge[MazeDirections.Count];
 
