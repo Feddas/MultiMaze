@@ -5,7 +5,7 @@ using System.Linq;
 
 /// <summary>
 /// Growing Tree algorithm
-/// created from tutorial http://catlikecoding.com/unity/tutorials/maze/
+/// created from tutorial http://catlikecoding.com/unity/tutorials/maze/ / http://www.reddit.com/r/gamedev/comments/29qlrj/i_wrote_a_maze_generating_tutorial_for_c_unity_45/
 /// 
 /// Alternate Maze Alorithms:
 /// http://www.cgl.uwaterloo.ca/~csk/projects/mazes/
