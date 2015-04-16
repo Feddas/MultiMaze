@@ -4,9 +4,11 @@
 3. mix? some players corner analog, some drag.
 
 #TODO
-- Way to exit, maybe end or begin drag on restart button
-- Fade text "First to get to the green pad wins"
+DONE - Fade text "First to get to the green pad wins"
+- If not on win screen, hold middle button for 3 seconds restart
+- Way to exit, Hold restart button for 6 seconds (3 more seconds after restart) with countdown
 - Animate Cube size from huge to small to show where the "green pad" is.
+- Keep score. keep track of how often a color has won.
 
 #TODO web version
 - use WASD, arrow keys, mouse and a gamepad to control 4 players

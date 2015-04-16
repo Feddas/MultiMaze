@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     private GameObject[] players;
     private Rigidbody[] playerRigidbody;
 
+    public Animator UiInstructions;
+
     private IntVector2 startCoordinates;
 
     void Start()
@@ -61,6 +63,13 @@ public class GameManager : MonoBehaviour
                 = startSpots[i % startSpots.Length]
                   .ToCellcenter(mazeInstance.size);
         }
+
+        BeginMenu();
+    }
+
+    public void BeginMenu()
+    {
+        UiInstructions.SetTrigger("FadeOut");
     }
 
     private void RestartGame()
