@@ -4,13 +4,14 @@
 3. mix? some players corner analog, some drag.
 
 #TODO
-- remove RollerBall jump
+DONE - remove RollerBall jump
 DONE - modify default mobile stick using video on http://forum.unity3d.com/threads/unity-5-new-mobile-assets-joystick-problem.307627/
+- Way to exit, maybe end or begin drag on restart button
 
 #TODO multiplayer positioning
-- find 4 paths that are all the same distance from the start
-- Create 4 Color materials for RollerBall
-- set start cell as the finish cell
+DONE - find 4 paths that are all the same distance from the start
+DONE - Create 4 Color materials for RollerBall
+DONE - set start cell as the finish cell
 - Make sure those 4 paths are at least 3 cells apart, so fingers don't jam against other players if using touch movement.
 
 ### player trails using debug lines

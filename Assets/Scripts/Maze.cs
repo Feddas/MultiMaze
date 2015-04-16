@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Growing Tree algorithm
@@ -54,6 +55,10 @@ public class Maze : MonoBehaviour
     {
         return cells[coordinates.x, coordinates.z];
     }
+    public MazeCell[] GetCells()
+    {
+        return cells.Cast<MazeCell>().ToArray();
+    }
 
     private void DoFirstGenerationStep(List<MazeCell> activeCells)
     {
@@ -101,17 +106,9 @@ public class Maze : MonoBehaviour
         }
     }
 
-    private int maxDistance;
-    private IntVector2 maxDistanceCell;
-
     private void trackDistance(MazeCell parent, MazeCell newCell)
     {
         newCell.DistanceFromFirstCell = parent.DistanceFromFirstCell + 1;
-        if (newCell.DistanceFromFirstCell > maxDistance)
-        {
-            maxDistance = newCell.DistanceFromFirstCell;
-            maxDistanceCell = newCell.coordinates;
-        }
     }
     private void addChild(MazeCell toCell, GameObject childToAdd)
     {
@@ -139,7 +136,7 @@ public class Maze : MonoBehaviour
         }
     }
 
-    public void Generate(IntVector2 startCoordinate)
+    public IntVector2[] Generate(IntVector2 startCoordinate, int numberPlayers)
     {
         cells = new MazeCell[size.x, size.z];
 
@@ -151,8 +148,30 @@ public class Maze : MonoBehaviour
             DoNextGenerationStep(activeCells);
         }
 
-        Debug.Log("Max cell " + maxDistanceCell.x + "," + maxDistanceCell.z + " is " + maxDistance);
-        addChild(cells[maxDistanceCell.x, maxDistanceCell.z], mazeFinish);
+        //Debug.Log("Max cell " + maxDistanceCell.x + "," + maxDistanceCell.z + " is " + maxDistance);
+        addChild(cells[startCoordinate.x, startCoordinate.z], mazeFinish);
+        return GetPostionsAtMaxDistance(numberPlayers);
+    }
+
+    public IntVector2[] GetPostionsAtMaxDistance(int howMany)
+    {
+        IntVector2[] startLocations = new IntVector2[howMany];
+
+        var uniqueSpots = GetCells()
+                .GroupBy(e => e.DistanceFromFirstCell)
+                .Where(group => group.Count() == howMany)
+                .Select(group => new { Distance = group.Key, Count = group.Count(), Cells = group.ToList() })
+                .ToList();
+
+        if (uniqueSpots.Count < 1) // requirement doesn't exist, players have to start ontop of each other.
+            startLocations = GetPostionsAtMaxDistance(howMany - 1);
+        else
+        {
+            var maxValue = uniqueSpots.Max(x => x.Distance);
+            startLocations = uniqueSpots.First(x => x.Distance == maxValue).Cells.Select(c => c.coordinates).ToArray();
+        } 
+
+        return startLocations;
     }
 
     private MazeCell CreateCell(IntVector2 coordinates)

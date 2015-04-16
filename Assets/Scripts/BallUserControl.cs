@@ -14,7 +14,7 @@ namespace UnityStandardAssets.Vehicles.Ball
         private Transform cam; // A reference to the main camera in the scenes transform
         private Vector3 camForward; // The current forward direction of the camera
         private bool jump; // whether the jump button is currently pressed
-
+        private string controllerPrefix;
 
         private void Awake()
         {
@@ -35,14 +35,14 @@ namespace UnityStandardAssets.Vehicles.Ball
             }
         }
 
-
         private void Update()
         {
             // Get the axis and jump input.
 
-            float h = CrossPlatformInputManager.GetAxis("Horizontal");
-            float v = CrossPlatformInputManager.GetAxis("Vertical");
-            jump = CrossPlatformInputManager.GetButton("Jump");
+            // These axis names match the material names; i.e. Pink & Blue
+            float h = CrossPlatformInputManager.GetAxis("Horizontal" + controllerPrefix);
+            float v = CrossPlatformInputManager.GetAxis("Vertical" + controllerPrefix);
+            //jump = CrossPlatformInputManager.GetButton("Jump");
             
             // calculate move direction
             if (cam != null)
@@ -58,12 +58,18 @@ namespace UnityStandardAssets.Vehicles.Ball
             }
         }
 
-
         private void FixedUpdate()
         {
             // Call the Move function of the ball controller
             ball.Move(move, jump);
             jump = false;
+        }
+
+        public void SetBallMaterial(Material newMaterial)
+        {
+            controllerPrefix = newMaterial.name;
+
+            this.GetComponent<Renderer>().material = newMaterial;
         }
     }
 }
