@@ -8,8 +8,10 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; set; }
 
+    public TextFader GameText;
     public GameObject BallPrefab;
     public Material[] playerColors;
+
     private GameObject[] players;
     private Rigidbody[] playerRigidbody;
 
@@ -22,6 +24,9 @@ public class GameManager : MonoBehaviour
         createPlayers();
         BeginGame();
         Instance = this;
+
+        this.Delay(0, () => GameText.ShowText("First color to the Green Pad wins the game!"));
+        UiInstructions.SetTrigger("FadeOut"); // Remove tutorial overlay
     }
 
     private void createPlayers()
@@ -64,12 +69,8 @@ public class GameManager : MonoBehaviour
                   .ToCellcenter(mazeInstance.size);
         }
 
-        BeginMenu();
-    }
-
-    public void BeginMenu()
-    {
-        UiInstructions.SetTrigger("FadeOut");
+        // Shows the tutorial overlay for every new maze
+        // UiInstructions.SetTrigger("FadeOut");
     }
 
     private void RestartGame()

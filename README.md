@@ -4,10 +4,9 @@
 3. mix? some players corner analog, some drag.
 
 #TODO
-DONE - Fade text "First to get to the green pad wins"
 - If not on win screen, hold middle button for 3 seconds restart
 - Way to exit, Hold restart button for 6 seconds (3 more seconds after restart) with countdown
-- Animate Cube size from huge to small to show where the "green pad" is.
+- Rotate or Animate Cube size from huge to small to show where the "green pad" is.
 - Keep score. keep track of how often a color has won.
 
 #TODO web version
@@ -27,7 +26,7 @@ We know everyone can't afford the $0.99 paid version. So we have options so you 
 or
 2. Compile a copy using the source code here.
 
-Here are the steps to building a complete version. Takes about 4 hr to do.
+Here are the steps to building a complete version. Takes about 4 hours to do.
 1. [1/2 hr] Download and install the free version of Unity 5.x
 2. [2 hr] Setup Unity to export to your device of choice. (Android requires installing the Android SDK)
 3. [1/2 hr] Download this source code from GitHub and make sure it runs in Unity
