@@ -16,6 +16,7 @@ public class TextFader : MonoBehaviour
     private int indexTextToShow;
     private int indexFullFadeSplits;
     private List<string> fullFadeSplits;
+    private int numberOfShowTextThreads;
 
     void Start()
     {
@@ -35,22 +36,29 @@ public class TextFader : MonoBehaviour
         }
         else
         {
-            // TODO: interrupt previous menu (or play after current menu is done)
+
         }
+
+        numberOfShowTextThreads++; // TODO: handle race condition if time on first thread is longer than time on second thread. As this would cause the second thread to be cancelled when the first thread should have been canceled instead.
 
         indexFullFadeSplits = indexTextToShow = 0;
         fullFadeSplits = stuff.Split(':').ToList();
         textToShow = fullFadeSplits[indexFullFadeSplits].Split(';').ToList();
 
-        Debug.Log("showing " + textToShow[indexTextToShow] + " out of:" + stuff);
         UpdateUiText(textToShow[indexTextToShow]);
         float secondsToShow = (float)textToShow[indexTextToShow].Length / TextSpeed;
-        //Debug.Log("Entered: " + secondsToShow);
+        //Debug.Log("showing " + textToShow[indexTextToShow] + " for " + secondsToShow + "s out of:" + stuff);
         this.Delay(secondsToShow, NextText);
     }
 
     void NextText()
     {
+        if (numberOfShowTextThreads > 1) // abort due to interruption by new thread
+        {
+            numberOfShowTextThreads--;
+            return;
+        }
+
         indexTextToShow++;
         if (indexTextToShow >= textToShow.Count) // completed a single non-fullfade sequence
         {
@@ -75,6 +83,7 @@ public class TextFader : MonoBehaviour
         {
             menuAnim.SetTrigger("FadeOut");
             isMenuOn = false;
+            numberOfShowTextThreads--;
         }
         else // fade to black
         {
