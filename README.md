@@ -4,9 +4,11 @@
 3. mix? some players corner analog, some drag.
 
 #TODO
-- If not on win screen, hold middle button for 3 seconds restart
-- Way to exit, Hold restart button for 6 seconds (3 more seconds after restart) with countdown
+DONE - If not on win screen, hold middle button for 3 seconds restart
+DONE - Way to exit, Hold restart button for 6 seconds (3 more seconds after restart) with countdown
+- Shadow on text so it can be read ontop of black maze
 - Rotate or Animate Cube size from huge to small to show where the "green pad" is.
+- Change analog stick to not require drag, to just require tap inside it's clamp
 - Keep score. keep track of how often a color has won.
 
 #TODO web version
