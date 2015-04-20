@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text FinishText;
-
     public static GameManager Instance { get; set; }
 
     public TextFader GameText;
@@ -49,7 +47,14 @@ public class GameManager : MonoBehaviour
     {
         if (UnityStandardAssets.CrossPlatformInput.CrossPlatformInputManager.GetButtonDown("Jump"))
         {
-            timeHoldingScreenCenter = Time.time;
+            if (Time.timeScale < float.Epsilon) // player is viewing the win screen
+            {
+                RestartGame();
+            }
+            else
+            {
+                timeHoldingScreenCenter = Time.time;
+            }
         }
         else if (UnityStandardAssets.CrossPlatformInput.CrossPlatformInputManager.GetButtonUp("Jump"))
         {
@@ -60,6 +65,7 @@ public class GameManager : MonoBehaviour
         }
         else if (timeHoldingScreenCenter > float.Epsilon)
         {
+            Debug.Log(timeHoldingScreenCenter + " vs " + Time.time);
             showCountdown();
         }
     }
@@ -135,7 +141,6 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
         Destroy(mazeInstance.gameObject);
-        FinishText.text = "";
 
         foreach (var rigidbody in playerRigidbody)
         {
@@ -149,7 +154,7 @@ public class GameManager : MonoBehaviour
 
     public void Winner(string player)
     {
-        FinishText.text = player + " won!";
-        Time.timeScale = 0;
+        GameText.ShowText(player + " won!");
+        this.Delay(2, () => Time.timeScale = 0);
     }
 }

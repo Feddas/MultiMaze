@@ -96,7 +96,10 @@ namespace UnityStandardAssets.CrossPlatformInput
 		}
 
 
-		public void OnPointerDown(PointerEventData data) { }
+		public void OnPointerDown(PointerEventData data)
+        {
+            OnDrag(data); // Allow a tap and hold to move the joystick thumb
+        }
 
 		void OnDisable()
 		{
