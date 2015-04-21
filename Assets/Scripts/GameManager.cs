@@ -2,6 +2,13 @@
 using System.Collections;
 using UnityEngine.UI;
 
+enum GameState
+{
+    Start,
+    Playing,
+    Win,
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; set; }
@@ -14,19 +21,23 @@ public class GameManager : MonoBehaviour
     private Rigidbody[] playerRigidbody;
 
     public Animator UiInstructions;
+    public Text RestartText;
 
     private IntVector2 startCoordinates;
     private float timeHoldingScreenCenter;
     private int timeHoldingStepCompleted;
+    private GameState gameState;
 
     void Start()
     {
+        RestartText.text = "Hold here for a new maze";
         createPlayers();
         BeginGame();
         Instance = this;
 
         this.Delay(0, () => GameText.ShowText("First color to the Green Pad wins the game!"));
         UiInstructions.SetTrigger("FadeOut"); // Remove tutorial overlay
+        gameState = GameState.Playing;
     }
 
     private void createPlayers()
@@ -47,7 +58,7 @@ public class GameManager : MonoBehaviour
     {
         if (UnityStandardAssets.CrossPlatformInput.CrossPlatformInputManager.GetButtonDown("Jump"))
         {
-            if (Time.timeScale < float.Epsilon) // player is viewing the win screen
+            if (gameState == GameState.Win) // player is viewing the win screen
             {
                 RestartGame();
             }
@@ -65,7 +76,6 @@ public class GameManager : MonoBehaviour
         }
         else if (timeHoldingScreenCenter > float.Epsilon)
         {
-            Debug.Log(timeHoldingScreenCenter + " vs " + Time.time);
             showCountdown();
         }
     }
@@ -148,6 +158,7 @@ public class GameManager : MonoBehaviour
             rigidbody.angularVelocity = Vector3.zero;
         }
 
+        gameState = GameState.Playing;
         Time.timeScale = 1;
         BeginGame();
     }
@@ -155,6 +166,16 @@ public class GameManager : MonoBehaviour
     public void Winner(string player)
     {
         GameText.ShowText(player + " won!");
-        this.Delay(2, () => Time.timeScale = 0);
+
+        RestartText.text = "Tap here for a new maze";
+        UiInstructions.SetTrigger("FadeOut");
+
+        gameState = GameState.Win;
+
+        // Don't let the win text fade away until a new game is begun
+        this.Delay(2, () =>
+        {
+            Time.timeScale = 0;
+        });
     }
 }
