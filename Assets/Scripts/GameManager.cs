@@ -78,6 +78,17 @@ public class GameManager : MonoBehaviour
         {
             showCountdown();
         }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (gameState == GameState.Win) // exit the win screen and return to the game
+            {
+                RestartGame();
+            }
+            else
+            {
+                Application.Quit();
+            }
+        }
     }
 
     private void showCountdown()
