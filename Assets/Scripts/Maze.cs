@@ -21,7 +21,11 @@ public class Maze : MonoBehaviour
     public MazeWall wallPrefab;
     public GameObject mazeFinish;
 
-    private MazeCell[,] cells;
+    /// <summary>
+    /// Changed to a single dimentional array as multi dimentional caused interop issues with WebGL
+    /// Conversion is [x, y] => [x * size.z + y] http://www.dotnetperls.com/flatten-array
+    /// </summary>
+    private MazeCell[] cells;
 
     // Use this for initialization
     void Start()
@@ -53,11 +57,12 @@ public class Maze : MonoBehaviour
 
     public MazeCell GetCell(IntVector2 coordinates)
     {
-        return cells[coordinates.x, coordinates.z];
+        return cells[coordinates.x * size.z + coordinates.z];
     }
+
     public MazeCell[] GetCells()
     {
-        return cells.Cast<MazeCell>().ToArray();
+        return cells;
     }
 
     private void DoFirstGenerationStep(List<MazeCell> activeCells)
@@ -138,7 +143,7 @@ public class Maze : MonoBehaviour
 
     public IntVector2[] Generate(IntVector2 startCoordinate, int numberPlayers)
     {
-        cells = new MazeCell[size.x, size.z];
+        cells = new MazeCell[size.x * size.z];
 
         // cells where a side may be open to add a new cell
         List<MazeCell> activeCells = new List<MazeCell>();
@@ -149,7 +154,7 @@ public class Maze : MonoBehaviour
         }
 
         //Debug.Log("Max cell " + maxDistanceCell.x + "," + maxDistanceCell.z + " is " + maxDistance);
-        addChild(cells[startCoordinate.x, startCoordinate.z], mazeFinish);
+        addChild(cells[startCoordinate.x * size.z + startCoordinate.z], mazeFinish);
         return GetPostionsAtMaxDistance(numberPlayers);
     }
 
@@ -163,7 +168,7 @@ public class Maze : MonoBehaviour
                 .Select(group => new { Distance = group.Key, Count = group.Count(), Cells = group.ToList() })
                 .ToList();
 
-        if (uniqueSpots.Count < 1) // requirement doesn't exist, players have to start ontop of each other.
+        if (uniqueSpots.Count < 1) // unable to find spots for every player, players have to start ontop of each other.
             startLocations = GetPostionsAtMaxDistance(howMany - 1);
         else
         {
@@ -177,7 +182,7 @@ public class Maze : MonoBehaviour
     private MazeCell CreateCell(IntVector2 coordinates)
     {
         MazeCell newCell = Instantiate(cellPrefab) as MazeCell;
-        cells[coordinates.x, coordinates.z] = newCell;
+        cells[coordinates.x * size.z + coordinates.z] = newCell;
         newCell.coordinates = coordinates;
         newCell.name = "Maze Cell " + coordinates.x + ", " + coordinates.z;
         newCell.transform.parent = transform;

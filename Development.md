@@ -14,3 +14,4 @@ Hard to repoduce: allow using hold to restart button after it's already been use
 # to do web version
 - use WASD, arrow keys, mouse and a gamepad to control 4 players
 - if no game pads are detected, delete yellow ball
+- tune webGL version http://docs.unity3d.com/Manual/webgl-building.html

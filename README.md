@@ -2,8 +2,10 @@
 We know everyone can't afford the $0.99 paid version. Never fear, we have options so you can play the full game for free! Getting the free version entails you either:
 
 1. Get a pre-built copy from a pirate. Arrr! (may contain viruses)
-or
-2. Compile a copy using the source code. Here are the steps to building a complete version. Takes about 4 hours to do.
+*or*
+2. Play the [WebGL version](https://googledrive.com/host/0B4HUoMvS4zzKfmVKekg0N1ZQTWdrdS01bUtJdkhxemxLYlI3WV9hcXRRMm9xMjFkRm9keDA/MultiMaze.html) (runs slow)
+*or*
+3. Compile a copy using the source code. Here are the steps to building a complete version. Takes about 4 hours to do.
 
    1. [1/2 hr] Download and install the free version of Unity 5.x
    2. [2 hr] Setup Unity to export to your device of choice. (Android requires installing the Android SDK)
