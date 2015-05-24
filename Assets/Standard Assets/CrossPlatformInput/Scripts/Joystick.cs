@@ -16,8 +16,10 @@ namespace UnityStandardAssets.CrossPlatformInput
 
 		public int MovementRange = 100;
 		public AxisOption axesToUse = AxisOption.Both; // The options for the axes that the still will use
-		public string horizontalAxisName = "Horizontal"; // The name given to the horizontal axis for the cross platform input
-		public string verticalAxisName = "Vertical"; // The name given to the vertical axis for the cross platform input
+
+        // SHAWN changed from unity inspector set properties to properties managed by JoystickType.cs
+        public string horizontalAxisName { get; set; } // = "Horizontal"; // The name given to the horizontal axis for the cross platform input
+        public string verticalAxisName { get; set; } // = "Vertical"; // The name given to the vertical axis for the cross platform input
 
 		Vector3 m_StartPos;
 		bool m_UseX; // Toggle for using the x axis
@@ -25,7 +27,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 		CrossPlatformInputManager.VirtualAxis m_HorizontalVirtualAxis; // Reference to the joystick in the cross platform input
 		CrossPlatformInputManager.VirtualAxis m_VerticalVirtualAxis; // Reference to the joystick in the cross platform input
 
-		void Start() // SHFEAT changed from OnEnable() SHAWFE
+        void OnEnable() // Don't CreateVirtualAxes() on Start() as, when this is disabled, it may overwrite Axes with the same name that are enabled
 		{
 			m_StartPos = transform.position;
 			CreateVirtualAxes();
@@ -66,7 +68,6 @@ namespace UnityStandardAssets.CrossPlatformInput
 			}
 		}
 
-
 		public void OnDrag(PointerEventData data)
 		{
 			Vector3 newPos = Vector3.zero;
@@ -88,13 +89,11 @@ namespace UnityStandardAssets.CrossPlatformInput
 			UpdateVirtualAxes(transform.position);
 		}
 
-
 		public void OnPointerUp(PointerEventData data)
 		{
 			transform.position = m_StartPos;
 			UpdateVirtualAxes(m_StartPos);
 		}
-
 
 		public void OnPointerDown(PointerEventData data)
         {

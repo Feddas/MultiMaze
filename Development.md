@@ -1,5 +1,3 @@
-# bugs to fix
-Hard to repoduce: allow using hold to restart button after it's already been used to regen a maze
 
 # to do AKA stuff you'll see happen with support
 - Rotate or Animate Cube size from huge to small to show where the "green pad" is.
@@ -15,3 +13,6 @@ Hard to repoduce: allow using hold to restart button after it's already been use
 - use WASD, arrow keys, mouse and a gamepad to control 4 players
 - if no game pads are detected, delete yellow ball
 - tune webGL version http://docs.unity3d.com/Manual/webgl-building.html
+
+# bugs to fix
+Hard to repoduce: allow using hold to restart button after it's already been used to regen a maze

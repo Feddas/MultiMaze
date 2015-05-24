@@ -84,9 +84,9 @@ public class GameManager : MonoBehaviour
             {
                 RestartGame();
             }
-            else
+            else // go back to the settings page
             {
-                Application.Quit();
+                Application.LoadLevel("Settings");
             }
         }
     }
