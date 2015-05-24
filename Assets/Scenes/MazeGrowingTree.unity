@@ -295,6 +295,10 @@ Prefab:
       propertyPath: m_Name
       value: MobileJoystickPink
       objectReference: {fileID: 0}
+    - target: {fileID: 11477252, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
+      propertyPath: controllerPrefix
+      value: Pink
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
   m_IsPrefabParent: 0
@@ -587,6 +591,10 @@ Prefab:
     - target: {fileID: 11477252, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
       propertyPath: verticalAxisName
       value: VerticalRed
+      objectReference: {fileID: 0}
+    - target: {fileID: 11477252, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
+      propertyPath: controllerPrefix
+      value: Red
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
@@ -1338,6 +1346,10 @@ Prefab:
       propertyPath: verticalAxisName
       value: VerticalBlue
       objectReference: {fileID: 0}
+    - target: {fileID: 11477252, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
+      propertyPath: controllerPrefix
+      value: Blue
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
   m_IsPrefabParent: 0
@@ -1746,6 +1758,10 @@ Prefab:
     - target: {fileID: 11477252, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
       propertyPath: verticalAxisName
       value: VerticalYellow
+      objectReference: {fileID: 0}
+    - target: {fileID: 11477252, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}
+      propertyPath: controllerPrefix
+      value: Yellow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e740901f7064c5449c783b7e009f8e6, type: 2}

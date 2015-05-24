@@ -5,6 +5,7 @@
    - create a cube line behind the player
    - to insure cubes aren't made when player is idle: only draw cube if last distance - current distance > some number
 - Resize walls and camera bounds to match x,y size of Maze.
+- Settings page radio boxes for maze size; short, normal, long, custom
 - Handicap: AKA let the unskilled have a chance against the skilled.
    - set movement speed for player so different players move at different speeds
 - Keep score. keep track of how often a color has won.

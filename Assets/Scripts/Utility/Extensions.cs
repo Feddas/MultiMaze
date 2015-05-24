@@ -15,3 +15,12 @@ public static class MonoBehaviourExtensions
         act();
     }
 }
+
+public static class FloatExtensions
+{
+    public static bool IsZero(this float original)
+    {
+        return Mathf.Approximately(original, 0f);
+        //return Mathf.Abs(original) <= float.Epsilon;
+    }
+}

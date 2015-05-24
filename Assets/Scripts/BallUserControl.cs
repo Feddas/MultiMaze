@@ -6,9 +6,6 @@ namespace UnityStandardAssets.Vehicles.Ball
 {
     public class BallUserControl : MonoBehaviour
     {
-        private static string firstColor;
-        private bool hasController;
-
         private Ball ball; // Reference to the ball controller.
 
         private Vector3 move; // the world-relative desired move direction, calculated from user input.
@@ -48,23 +45,16 @@ namespace UnityStandardAssets.Vehicles.Ball
             float h = CrossPlatformInputManager.GetAxis("Horizontal" + controllerPrefix);
             float v = CrossPlatformInputManager.GetAxis("Vertical" + controllerPrefix);
 
-            if (hasController)
-                useController(ref h, ref v);
-
             // calculate move direction
             return (v * Vector3.forward + h * Vector3.right).normalized;
         }
 
-        private bool isZero(float value)
-        {
-            return Mathf.Abs(value) <= float.Epsilon;
-        }
         private Vector3 fromDrag()
         {
             // determine if, and how much, the analog stick has moved
             float h = CrossPlatformInputManager.GetAxis("Horizontal" + controllerPrefix);
             float v = CrossPlatformInputManager.GetAxis("Vertical" + controllerPrefix);
-            if (isZero(h) && isZero(v))
+            if (h.IsZero() && v.IsZero())
             {
                 return Vector3.zero;
             }
@@ -79,21 +69,6 @@ namespace UnityStandardAssets.Vehicles.Ball
             return result;
         }
 
-        /// <summary>
-        /// Override a single players movement with a connected controller
-        /// </summary>
-        private void useController(ref float h, ref float v)
-        {
-            float hController = Input.GetAxis("Horizontal");
-            float vController = Input.GetAxis("Vertical");
-
-            if (Mathf.Abs(hController) > float.Epsilon || Mathf.Abs(vController) > float.Epsilon)
-            {
-                h = hController;
-                v = vController;
-            }
-        }
-
         private void FixedUpdate()
         {
             // Call the Move function of the ball controller
@@ -103,13 +78,6 @@ namespace UnityStandardAssets.Vehicles.Ball
         public void SetBallMaterial(Material newMaterial)
         {
             controllerPrefix = newMaterial.name;
-
-            // Allow only the first player (which is pink) to use a connected joystick
-            if (string.IsNullOrEmpty(firstColor) && Input.GetJoystickNames().Length > 0)
-            {
-                firstColor = controllerPrefix;
-                hasController = true;
-            }
 
             this.GetComponent<Renderer>().material = newMaterial;
         }

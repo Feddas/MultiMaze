@@ -11,6 +11,8 @@ public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public string horizontalAxisName { get; set; }
     public string verticalAxisName { get; set; }
 
+    float speedOfController = 100;
+    //bool useNonTouch;  // TODO: get this to work
     Vector3 m_StartPos;
     CrossPlatformInputManager.VirtualAxis m_HorizontalVirtualAxis; // Reference to the joystick in the cross platform input
     CrossPlatformInputManager.VirtualAxis m_VerticalVirtualAxis; // Reference to the joystick in the cross platform input
@@ -46,8 +48,33 @@ public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     void UpdateVirtualAxes(Vector3 value)
     {
+        //if (useNonTouch)
+        //    return;
+
         m_HorizontalVirtualAxis.Update(value.x);
         m_VerticalVirtualAxis.Update(value.y);
+    }
+
+    /// <summary>
+    /// Override a single players movement with a connected controller
+    /// </summary>
+    /// <param name="axisValue">a -1 to 1 axis value</param>
+    public void SetAxesFromNonTouch(Vector3 axisValue)
+    {
+        if (axisValue == Vector3.zero)
+        {
+            //useNonTouch = false;
+            return;
+        }
+
+        var newPosition = transform.position;
+        newPosition.x += axisValue.x * Time.deltaTime * speedOfController;
+        newPosition.y += axisValue.y * Time.deltaTime * speedOfController;
+        transform.position = newPosition;
+
+        m_HorizontalVirtualAxis.Update(newPosition.x);
+        m_VerticalVirtualAxis.Update(newPosition.y);
+        //useNonTouch = true;
     }
 
     public void OnDrag(PointerEventData data)
