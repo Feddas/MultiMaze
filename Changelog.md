@@ -1,8 +1,8 @@
 v1.1 - May 24th, 2015
-- settings page for multiple control types
-- new control type: ball attraction to finger tip "Finger Twister"
+- Start page to select ways to control the ball
+- New "Finger Twister" control type; attract ball to finger tip
 
-v1.0 - April 23rd, 2015
+v1.0 - April 22nd, 2015
 - 4 player using ball torque control type
-- growing tree alorithm maze generation
-- restart and exit using middle of screen button
+- Maze generator
+- Restart and exit using middle of screen button

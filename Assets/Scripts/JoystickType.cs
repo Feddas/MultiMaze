@@ -56,8 +56,6 @@ public class JoystickType : MonoBehaviour
     private void useController()
     {
         var axes = externalAxes();
-        if (axes == Vector3.zero)
-            return;
 
         switch (controlMode)
         {
@@ -92,14 +90,9 @@ public class JoystickType : MonoBehaviour
     {
         float hController = Input.GetAxis("Horizontal");
         float vController = Input.GetAxis("Vertical");
+        
+        return new Vector3(hController, vController, 0);
 
-        if (Mathf.Abs(hController) > float.Epsilon || Mathf.Abs(vController) > float.Epsilon)
-        {
-            return new Vector3(hController, vController, 0);
-        }
-        else
-        {
-            return Vector3.zero;
-        }
+        // deadzone and bounds checks are handled in JoystickDrag or JoystickCrossInput so that no input can be custom handled
     }
 }

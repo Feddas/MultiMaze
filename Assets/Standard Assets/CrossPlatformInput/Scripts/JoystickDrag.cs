@@ -12,7 +12,7 @@ public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public string verticalAxisName { get; set; }
 
     float speedOfController = 100;
-    //bool useNonTouch;  // TODO: get this to work
+    bool useNonTouch;
     Vector3 m_StartPos;
     CrossPlatformInputManager.VirtualAxis m_HorizontalVirtualAxis; // Reference to the joystick in the cross platform input
     CrossPlatformInputManager.VirtualAxis m_VerticalVirtualAxis; // Reference to the joystick in the cross platform input
@@ -48,8 +48,17 @@ public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     void UpdateVirtualAxes(Vector3 value)
     {
-        //if (useNonTouch)
-        //    return;
+        if (useNonTouch)
+            return;
+
+        if (value == Vector3.zero)
+        {
+            transform.position = m_StartPos;
+        }
+        else
+        {
+            transform.position = value;
+        }
 
         m_HorizontalVirtualAxis.Update(value.x);
         m_VerticalVirtualAxis.Update(value.y);
@@ -61,31 +70,45 @@ public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     /// <param name="axisValue">a -1 to 1 axis value</param>
     public void SetAxesFromNonTouch(Vector3 axisValue)
     {
-        if (axisValue == Vector3.zero)
+        // if external controller is no longer being used, free up for touch control
+        if (axisValue.magnitude < Joystick.Deadzone)
         {
-            //useNonTouch = false;
+            useNonTouch = false;
             return;
         }
+        // else apply external controller input
 
+        // don't let stick thumb go out of screen bounds
+        if ((transform.position.x < 0 && axisValue.x < 0)
+            || (transform.position.x > Screen.width && axisValue.x > 0))
+        {
+            axisValue.x = 0;
+        }
+        if ((transform.position.y < 0 && axisValue.y < 0)
+            || (transform.position.y > Screen.height && axisValue.y > 0))
+        {
+            axisValue.y = 0;
+        }
+
+        // move stick thumb position
         var newPosition = transform.position;
         newPosition.x += axisValue.x * Time.deltaTime * speedOfController;
         newPosition.y += axisValue.y * Time.deltaTime * speedOfController;
         transform.position = newPosition;
 
+        // update axes
         m_HorizontalVirtualAxis.Update(newPosition.x);
         m_VerticalVirtualAxis.Update(newPosition.y);
-        //useNonTouch = true;
+        useNonTouch = true;
     }
 
     public void OnDrag(PointerEventData data)
     {
-        transform.position = new Vector3(data.position.x, data.position.y, 0);
-        UpdateVirtualAxes(transform.position);
+        UpdateVirtualAxes(data.position);
     }
 
     public void OnPointerUp(PointerEventData data)
     {
-        transform.position = m_StartPos;
         UpdateVirtualAxes(Vector3.zero);
     }
 
