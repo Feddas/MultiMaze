@@ -102,9 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MovePower: 5
-  m_UseTorque: 1
   m_MaxAngularVelocity: 25
-  m_JumpPower: 4
+  BallTrail: {fileID: 2100000, guid: 672ae13277b45b54d9159f16288c73ce, type: 2}
 --- !u!135 &13558260
 SphereCollider:
   m_ObjectHideFlags: 1

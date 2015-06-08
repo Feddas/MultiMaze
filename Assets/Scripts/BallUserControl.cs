@@ -6,6 +6,11 @@ namespace UnityStandardAssets.Vehicles.Ball
 {
     public class BallUserControl : MonoBehaviour
     {
+        ///// <summary>
+        ///// sends the new color being changed to
+        ///// </summary>
+        //public event EventHandler<EventArgs<string>> ColorChanged;
+
         private Ball ball; // Reference to the ball controller.
 
         private Vector3 move; // the world-relative desired move direction, calculated from user input.
@@ -78,8 +83,18 @@ namespace UnityStandardAssets.Vehicles.Ball
         public void SetBallMaterial(Material newMaterial)
         {
             controllerPrefix = newMaterial.name;
+            StartCoroutine(ball.StartBallTrail(newMaterial.color));
+            //OnColorChanged();
 
             this.GetComponent<Renderer>().material = newMaterial;
         }
+
+        //private void OnColorChanged()
+        //{
+        //    if (ColorChanged != null)
+        //    {
+        //        ColorChanged(this, ColorChanged.Arg(controllerPrefix));
+        //    }
+        //}
     }
 }

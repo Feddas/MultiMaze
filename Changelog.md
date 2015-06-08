@@ -1,3 +1,6 @@
+v1.2
+- Colored ball trails
+
 v1.1 - May 24th, 2015
 - Start page to select ways to control the ball
 - New "Finger Twister" control type; attract ball to finger tip
