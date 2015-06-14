@@ -4,8 +4,14 @@ using System.Collections.Generic;
 
 public class ColoredTrail
 {
+    private const int segmentPoolSize = 48;
+
+    /// <summary>
+    /// Material to use on the colored trail meshes
+    /// </summary>
     public Material LineMaterial { get; set; }
 
+    private int poolIndex;
     private Vector3 lastTrailVertex;
 
     public ColoredTrail(Material lineMaterial)
@@ -13,21 +19,29 @@ public class ColoredTrail
         this.LineMaterial = lineMaterial;
     }
 
-    public IEnumerator StartTrail(Transform objectToTrail, Color color)
+    public IEnumerator StartTrail(Transform objectToTrail)
     {
-        color.a = 0.5f;
-        lastTrailVertex = objectToTrail.position;
+        // set y to 0.5 for a constant y value. Ensuring the trail doesn't follow the y-axis of the ball popping up or falling down
+        lastTrailVertex = objectToTrail.position.SetY(0.5f);
+        Vector3 currentPosition;
 
         while (true)
         {
-            // TODO: purge all create cube lines when a new level has begun
-            if (Vector3.Distance(lastTrailVertex, objectToTrail.position) > .5)
+            currentPosition = objectToTrail.position.SetY(0.5f);
+
+            if (Vector3.Distance(lastTrailVertex, currentPosition) > .5)
             {
-                addRuntimeLine(lastTrailVertex, objectToTrail.position, color);
-                lastTrailVertex = objectToTrail.position;
+                addRuntimeLine(lastTrailVertex, currentPosition, Color.clear);
+                lastTrailVertex = objectToTrail.position.SetY(0.5f);
             }
             yield return null;
         }
+    }
+
+    public void PurgeLines()
+    {
+        poolIndex = 0;
+        removeSegments(lineSegments.Count);
     }
 
     #region [ Debug with lines ]
@@ -35,10 +49,12 @@ public class ColoredTrail
 
     private void addRuntimeLine(Vector3 start, Vector3 end, Color color)
     {
-        removeSegements(lineSegments.Count - 48); //set a maximum number 48 line segements.
-        lineSegments.Add(
-            createLineSegment(start, end, color)
-        );
+        if (replaceSegment(start, end) == false)
+        {
+            lineSegments.Add(
+                createLineSegment(start, end, color)
+            );
+        }
     }
 
     /// <summary>
@@ -46,22 +62,49 @@ public class ColoredTrail
     /// </summary>
     private GameObject createLineSegment(Vector3 start, Vector3 end, Color lineColor, float lineWidth = 0.3f)
     {
-        // TODO: reposition exisitng lines instead of destroying
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);  // TODO: try Quad type
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Quad);
         GameObject.Destroy(cube.GetComponent<Collider>());
-        cube.transform.position = Vector3.Lerp(start, end, 0.5f);
-        cube.transform.LookAt(end);
-        cube.transform.localScale = new Vector3(lineWidth, lineWidth, Vector3.Distance(start, end));
+        stretchQuad(cube, start, end, lineWidth);
 
         var cubeRenderer = cube.GetComponent<Renderer>();
         cubeRenderer.material = LineMaterial;
-        cubeRenderer.material.color = lineColor;
+        //cubeRenderer.material.color = lineColor; // don't modify material to help with static batching
         cubeRenderer.receiveShadows = false;
         cubeRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         return cube;
     }
 
-    private void removeSegements(int howManyToRemove)
+    private bool replaceSegment(Vector3 start, Vector3 end)
+    {
+        if (lineSegments.Count >= segmentPoolSize)
+        {
+            if (poolIndex == lineSegments.Count)
+                poolIndex = 0;
+            stretchQuad(lineSegments[poolIndex++], start, end);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void stretchCube(GameObject cube, Vector3 start, Vector3 end, float lineWidth = 0.3f)
+    {
+        cube.transform.position = Vector3.Lerp(start, end, 0.5f);
+        cube.transform.LookAt(end);
+        cube.transform.localScale = new Vector3(lineWidth, lineWidth, Vector3.Distance(start, end));
+    }
+
+    private void stretchQuad(GameObject quad, Vector3 start, Vector3 end, float lineWidth = 0.3f)
+    {
+        quad.transform.position = Vector3.Lerp(start, end, 0.5f);
+        quad.transform.LookAt(end);
+        quad.transform.Rotate(90, 0, 0);
+        quad.transform.localScale = new Vector3(lineWidth, Vector3.Distance(start, end), 1);
+    }
+
+    private void removeSegments(int howManyToRemove)
     {
         if (howManyToRemove <= 0)
             return;

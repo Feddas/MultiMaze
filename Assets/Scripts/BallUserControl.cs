@@ -83,7 +83,7 @@ namespace UnityStandardAssets.Vehicles.Ball
         public void SetBallMaterial(Material newMaterial)
         {
             controllerPrefix = newMaterial.name;
-            StartCoroutine(ball.StartBallTrail(newMaterial.color));
+            StartCoroutine(ball.StartBallTrail(newMaterial));
             //OnColorChanged();
 
             this.GetComponent<Renderer>().material = newMaterial;

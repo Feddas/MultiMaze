@@ -34,12 +34,20 @@ namespace UnityStandardAssets.Vehicles.Ball
         {
         }
 
-        public IEnumerator StartBallTrail(Color color)
+        public IEnumerator StartBallTrail(Material ballTrailMaterial)
         {
             yield return null; // wait a frame for balls to be positioned
 
-            ballTrail = new ColoredTrail(BallTrail);
-            StartCoroutine(ballTrail.StartTrail(this.transform, color));
+            ballTrail = new ColoredTrail(ballTrailMaterial);
+            StartCoroutine(ballTrail.StartTrail(this.transform));
+        }
+
+        public IEnumerator ResetBall()
+        {
+            yield return null; // wait a frame for balls to be positioned
+
+            if (ballTrail != null)
+                ballTrail.PurgeLines();
         }
 
         public void Move(Vector3 moveDirection)

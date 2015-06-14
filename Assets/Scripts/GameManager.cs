@@ -149,9 +149,13 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < playerColors.Length; i++)
         {
+            // move players into position
             players[i].transform.position
                 = startSpots[i % startSpots.Length]
                   .ToCellcenter(mazeInstance.size);
+
+            // insures the ball's are ready for a new game. Right now, this just clears ball trails.
+            StartCoroutine(players[i].GetComponent<UnityStandardAssets.Vehicles.Ball.Ball>().ResetBall());
         }
 
         // Shows the tutorial overlay for every new maze

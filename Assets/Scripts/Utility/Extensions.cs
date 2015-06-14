@@ -24,3 +24,11 @@ public static class FloatExtensions
         //return Mathf.Abs(original) <= float.Epsilon;
     }
 }
+
+public static class Vector3Extensions
+{
+    public static Vector3 SetY(this Vector3 original, float yValue)
+    {
+        return new Vector3(original.x, yValue, original.z);
+    }
+}
