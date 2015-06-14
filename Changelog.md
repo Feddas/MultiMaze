@@ -1,5 +1,5 @@
-v1.2
-- Colored ball trails
+v1.2 - June 14th, 2015
+- Track where your ball has been with colored ball trails
 
 v1.1 - May 24th, 2015
 - Start page to select ways to control the ball
