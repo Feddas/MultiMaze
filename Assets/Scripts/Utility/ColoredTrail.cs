@@ -62,16 +62,18 @@ public class ColoredTrail
     /// </summary>
     private GameObject createLineSegment(Vector3 start, Vector3 end, Color lineColor, float lineWidth = 0.3f)
     {
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        GameObject.Destroy(cube.GetComponent<Collider>());
-        stretchQuad(cube, start, end, lineWidth);
+        GameObject lineSegment = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        GameObject.Destroy(lineSegment.GetComponent<Collider>());
+        lineSegment.name += LineMaterial.name;
+        lineSegment.isStatic = true;
+        stretchQuad(lineSegment, start, end, lineWidth);
 
-        var cubeRenderer = cube.GetComponent<Renderer>();
+        var cubeRenderer = lineSegment.GetComponent<Renderer>();
         cubeRenderer.material = LineMaterial;
-        //cubeRenderer.material.color = lineColor; // don't modify material to help with static batching
+        //cubeRenderer.material.color = lineColor; // don't modify material to ensure static batching of material
         cubeRenderer.receiveShadows = false;
         cubeRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        return cube;
+        return lineSegment;
     }
 
     private bool replaceSegment(Vector3 start, Vector3 end)
