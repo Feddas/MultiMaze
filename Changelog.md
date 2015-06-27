@@ -1,3 +1,7 @@
+v1.3
+- Balls no longer collide with one another
+- visible joystick interaction zone for control style Ball Engine
+
 v1.2 - June 14th, 2015
 - Track where your ball has been with colored ball trails
 

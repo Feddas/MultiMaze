@@ -14,7 +14,7 @@ GameObject:
   - 54: {fileID: 5438318}
   - 114: {fileID: 11488940}
   - 114: {fileID: 11443528}
-  m_Layer: 9
+  m_Layer: 4
   m_Name: RollerBall
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MovePower: 5
   m_MaxAngularVelocity: 25
-  BallTrail: {fileID: 2100000, guid: 672ae13277b45b54d9159f16288c73ce, type: 2}
+  BallTrail: {fileID: 0}
 --- !u!135 &13558260
 SphereCollider:
   m_ObjectHideFlags: 1

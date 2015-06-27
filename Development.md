@@ -1,9 +1,6 @@
 
 # to do AKA stuff you'll see happen with support
 - Rotate or Animate Cube size from huge to small to show where the "green pad" is.
-- colored "been there" trails.
-   - create a cube line behind the player
-   - to insure cubes aren't made when player is idle: only draw cube if last distance - current distance > some number
 - Resize walls and camera bounds to match x,y size of Maze.
 - Settings page radio boxes for maze size; short, normal, long, custom
 - Handicap: AKA let the unskilled have a chance against the skilled.

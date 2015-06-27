@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 using System;
+using UnityEngine.UI;
 
 public class JoystickType : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class JoystickType : MonoBehaviour
     private Joystick joystickCrossInput;
     [SerializeField]
     private JoystickDrag joystickDrag;
+    [SerializeField]
+    private RectTransform joystickThumb;
+    [SerializeField][Tooltip("visualization of where the joystick can be interacted with")]
+    private Image interactZoneImage;
 
     [Tooltip("The color of this controller. This value is used to bind to the controllerPrefix set in the ball (case sensitive)")]
     public string controllerPrefix; // The name given to the vertical axis for the cross platform input
@@ -25,15 +30,20 @@ public class JoystickType : MonoBehaviour
     {
         hasController = hasController_();
         controlMode = PlayerPref.Get(PlayerPrefEnum.ControlMode, defaultValue: ControlModeEnum.Torque);
+        Color zoneColor = interactZoneImage.color;
         switch (controlMode)
         {
             case ControlModeEnum.Torque:
+                zoneColor.a = .5f;
                 joystickDrag.enabled = false;
+                joystickCrossInput.SetMovementRange(this.transform as RectTransform);
+                joystickCrossInput.JoystickThumb = joystickThumb;
                 joystickCrossInput.horizontalAxisName = horizontalAxisName + controllerPrefix;
                 joystickCrossInput.verticalAxisName = verticalAxisName + controllerPrefix;
                 joystickCrossInput.enabled = true;
                 break;
             case ControlModeEnum.Drag:
+                zoneColor.a = 0;
                 joystickCrossInput.enabled = false;
                 joystickDrag.horizontalAxisName = horizontalAxisName + controllerPrefix;
                 joystickDrag.verticalAxisName = verticalAxisName + controllerPrefix;
@@ -44,6 +54,7 @@ public class JoystickType : MonoBehaviour
             default:
                 break;
         }
+        interactZoneImage.color = zoneColor;
     }
 
     // Update is called once per frame

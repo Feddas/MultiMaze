@@ -6,6 +6,10 @@ namespace UnityStandardAssets.CrossPlatformInput
 {
     public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
+        /// <summary>
+        /// Visual that is used to indicate what direction the joystick is being pulled in
+        /// </summary>
+        public RectTransform JoystickThumb { get; set; }
         public const float Deadzone = 0.1f;
 
         public enum AxisOption
@@ -16,7 +20,7 @@ namespace UnityStandardAssets.CrossPlatformInput
             OnlyVertical // Only vertical
         }
 
-        public int MovementRange = 100;
+        private int movementRange { get; set; }
         public AxisOption axesToUse = AxisOption.Both; // The options for the axes that the still will use
 
         // SHAWN changed from unity inspector set properties to properties managed by JoystickType.cs
@@ -31,7 +35,9 @@ namespace UnityStandardAssets.CrossPlatformInput
 
         void OnEnable() // Don't CreateVirtualAxes() on Start() as, when this is disabled, it may overwrite Axes with the same name that are enabled
         {
-            m_StartPos = transform.position;
+            if (JoystickThumb == null)
+                JoystickThumb = transform as RectTransform;
+            m_StartPos = JoystickThumb.position;
             CreateVirtualAxes();
         }
 
@@ -39,7 +45,7 @@ namespace UnityStandardAssets.CrossPlatformInput
         {
             var delta = m_StartPos - value;
             delta.y = -delta.y;
-            delta /= MovementRange;
+            delta /= movementRange;
             if (m_UseX)
             {
                 m_HorizontalVirtualAxis.Update(-delta.x);
@@ -49,6 +55,11 @@ namespace UnityStandardAssets.CrossPlatformInput
             {
                 m_VerticalVirtualAxis.Update(delta.y);
             }
+        }
+
+        public void SetMovementRange(RectTransform rectTransform)
+        {
+            movementRange = (int)Mathf.Min(rectTransform.rect.width, rectTransform.rect.height) / 2;
         }
 
         /// <param name="axisValue">a -1 to 1 axis value</param>
@@ -97,13 +108,13 @@ namespace UnityStandardAssets.CrossPlatformInput
             }
 
             // SHFEAT replaced square Mathf.Clamp with circular Vector3.ClampMagnitude
-            transform.position = Vector3.ClampMagnitude(newPos, MovementRange) + m_StartPos;
-            UpdateVirtualAxes(transform.position);
+            JoystickThumb.position = Vector3.ClampMagnitude(newPos, movementRange) + m_StartPos;
+            UpdateVirtualAxes(JoystickThumb.position);
         }
 
         public void OnPointerUp(PointerEventData data)
         {
-            transform.position = m_StartPos;
+            JoystickThumb.position = m_StartPos;
             UpdateVirtualAxes(m_StartPos);
         }
 

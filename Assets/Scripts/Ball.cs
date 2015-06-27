@@ -11,15 +11,12 @@ namespace UnityStandardAssets.Vehicles.Ball
         private float m_MovePower = 5; // The force added to the ball to move it.
         [SerializeField]
         private float m_MaxAngularVelocity = 25; // The maximum velocity the ball can rotate at.
-        [SerializeField]
-        private Material BallTrail; // Material to use for the ball trail
 
         private const float k_GroundRayLength = 1f; // The length of the ray to check if the ball is grounded.
         private ControlModeEnum controlMode; // Whether or not to use torque to move the ball.
         private Rigidbody m_Rigidbody;
 
         private ColoredTrail ballTrail;
-        private Vector3 lastBallTrailVertex;
 
         private void Awake()
         {
