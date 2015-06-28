@@ -34,10 +34,10 @@ public class JoystickType : MonoBehaviour
         switch (controlMode)
         {
             case ControlModeEnum.Torque:
-                zoneColor.a = .5f;
+                zoneColor.a = .25f;
                 joystickDrag.enabled = false;
-                joystickCrossInput.SetMovementRange(this.transform as RectTransform);
                 joystickCrossInput.JoystickThumb = joystickThumb;
+                joystickCrossInput.SetMovementRange(this.transform as RectTransform);
                 joystickCrossInput.horizontalAxisName = horizontalAxisName + controllerPrefix;
                 joystickCrossInput.verticalAxisName = verticalAxisName + controllerPrefix;
                 joystickCrossInput.enabled = true;

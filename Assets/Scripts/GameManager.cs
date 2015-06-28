@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         BeginGame();
         Instance = this;
 
-        this.Delay(0, () => GameText.ShowText("First color to the Green Pad wins the game!"));
+        this.Delay(0, () => GameText.ShowText("First color to the Checkered Flag wins the game!"));
         UiInstructions.SetTrigger("FadeOut"); // Remove tutorial overlay
         gameState = GameState.Playing;
     }

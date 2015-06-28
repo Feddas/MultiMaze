@@ -57,9 +57,12 @@ namespace UnityStandardAssets.CrossPlatformInput
             }
         }
 
+        ///<summary>Uses JoystickThumb and Interaction zone to determine movement range</summary>
         public void SetMovementRange(RectTransform rectTransform)
         {
-            movementRange = (int)Mathf.Min(rectTransform.rect.width, rectTransform.rect.height) / 2;
+            int radiusThumb = (int)Mathf.Min(JoystickThumb.rect.width, JoystickThumb.rect.height) / 2;
+            int radiusInteractZone = (int)Mathf.Min(rectTransform.rect.width, rectTransform.rect.height) / 2;
+            movementRange = radiusInteractZone - radiusThumb;
         }
 
         /// <param name="axisValue">a -1 to 1 axis value</param>

@@ -1,6 +1,6 @@
 
 # to do AKA stuff you'll see happen with support
-- Rotate or Animate Cube size from huge to small to show where the "green pad" is.
+- Tilting the device moves all 4 balls at the same
 - Resize walls and camera bounds to match x,y size of Maze.
 - Settings page radio boxes for maze size; short, normal, long, custom
 - Handicap: AKA let the unskilled have a chance against the skilled.

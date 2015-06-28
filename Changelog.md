@@ -1,6 +1,7 @@
-v1.3
+v1.3 - June 28th, 2015
 - Balls no longer collide with one another
-- visible joystick interaction zone for control style Ball Engine
+- Control style Ball Engine: visible joystick interaction zone
+- Checkered flag for finish zone
 
 v1.2 - June 14th, 2015
 - Track where your ball has been with colored ball trails
