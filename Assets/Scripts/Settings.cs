@@ -20,13 +20,13 @@ public class Settings : MonoBehaviour
 
     public void ModeTorque()
     {
-        PlayerPrefs.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Torque);
+        PlayerPref.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Torque);
         Application.LoadLevel("MazeGrowingTree");
     }
 
     public void ModeDrag()
     {
-        PlayerPrefs.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Drag);
+        PlayerPref.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Drag);
         Application.LoadLevel("MazeGrowingTree");
     }
 }

@@ -14,3 +14,9 @@
 
 # bugs to fix
 Hard to repoduce: allow using hold to restart button after it's already been used to regen a maze
+
+# WebGL
+As of Unity 5.1, WebGL does not support use of:
+- PlayerPrefs
+- Multi-Dimensional arrays
+- Setting page doesn't work "unity3d webgl uncaught rangeerror maximum call stack size exceeded"
