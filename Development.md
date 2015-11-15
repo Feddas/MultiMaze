@@ -1,10 +1,14 @@
 
 # to do AKA stuff you'll see happen with support
+- In finger twister, able to offset the analog stick so you can see the center of the icon as you drag.
+- Only 1 winner, right now if a second player gets to finish before gametime = 0 they become the winner.
+- Use LineRender instead of trail of Quads if LineRender has better performance
 - Tilting the device moves all 4 balls at the same
 - Resize walls and camera bounds to match x,y size of Maze.
 - Settings page radio boxes for maze size; short, normal, long, custom
 - Handicap: AKA let the unskilled have a chance against the skilled.
    - set movement speed for player so different players move at different speeds
+   - Slow a player by 20% after they win a game
 - Keep score. keep track of how often a color has won.
 
 # to do web version
