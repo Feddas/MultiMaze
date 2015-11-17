@@ -144,7 +144,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 1ddbb13073b458648aabfc57540f6056, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -438,14 +438,14 @@ Prefab:
       propertyPath: m_Pivot.y
       value: .5
       objectReference: {fileID: 0}
-    - target: {fileID: 11417716, guid: 4eb412d06f46dde40aaf96a010a994b9, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1802501620}
     - target: {fileID: 195532, guid: 4eb412d06f46dde40aaf96a010a994b9, type: 2}
       propertyPath: m_Name
       value: Torque
       objectReference: {fileID: 0}
+    - target: {fileID: 11417716, guid: 4eb412d06f46dde40aaf96a010a994b9, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1802501620}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4eb412d06f46dde40aaf96a010a994b9, type: 2}
   m_IsPrefabParent: 0
