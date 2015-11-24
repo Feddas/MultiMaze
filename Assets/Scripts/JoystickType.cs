@@ -42,14 +42,14 @@ public class JoystickType : MonoBehaviour
                 joystickCrossInput.verticalAxisName = verticalAxisName + controllerPrefix;
                 joystickCrossInput.enabled = true;
                 break;
-            case ControlModeEnum.Drag:
+            case ControlModeEnum.Attract:
+            case ControlModeEnum.Trace:
                 zoneColor.a = 0;
                 joystickCrossInput.enabled = false;
                 joystickDrag.horizontalAxisName = horizontalAxisName + controllerPrefix;
                 joystickDrag.verticalAxisName = verticalAxisName + controllerPrefix;
                 joystickDrag.enabled = true;
                 break;
-            case ControlModeEnum.Path:
             case ControlModeEnum.None:
             default:
                 break;
@@ -73,10 +73,10 @@ public class JoystickType : MonoBehaviour
             case ControlModeEnum.Torque:
                 joystickCrossInput.SetAxesFromNonTouch(axes);
                 break;
-            case ControlModeEnum.Drag:
+            case ControlModeEnum.Attract:
+            case ControlModeEnum.Trace:
                 joystickDrag.SetAxesFromNonTouch(axes);
                 break;
-            case ControlModeEnum.Path:
             case ControlModeEnum.None:
             default:
                 break;

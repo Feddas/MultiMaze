@@ -34,10 +34,12 @@ namespace UnityStandardAssets.Vehicles.Ball
                 case ControlModeEnum.Torque:
                     move = fromTorque();
                     break;
-                case ControlModeEnum.Drag:
-                    move = fromDrag();
+                case ControlModeEnum.Attract:
+                    move = fromAttract();
                     break;
-                case ControlModeEnum.Path:
+                case ControlModeEnum.Trace:
+                    // TODO: move = fromTrace();
+                    break;
                 case ControlModeEnum.None:
                 default:
                     throw new NotImplementedException(controlMode.ToString() + " is not yet supported in BallUserControl.cs");
@@ -54,7 +56,7 @@ namespace UnityStandardAssets.Vehicles.Ball
             return (v * Vector3.forward + h * Vector3.right).normalized;
         }
 
-        private Vector3 fromDrag()
+        private Vector3 fromAttract()
         {
             // determine if, and how much, the analog stick has moved
             float h = CrossPlatformInputManager.GetAxis("Horizontal" + controllerPrefix);

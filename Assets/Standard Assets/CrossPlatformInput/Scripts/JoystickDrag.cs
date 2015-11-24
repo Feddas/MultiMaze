@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityStandardAssets.CrossPlatformInput;
 
 /// <summary>
-/// This class enables playmodes for Drag and Path. The Torque playmode is handled by Joystick.cs. Control to Joystick.cs is given in JoystickType.cs.
+/// This class enables playmodes for Attract and Trace. The Torque playmode is handled by Joystick.cs. Control to Joystick.cs is given in JoystickType.cs.
 /// </summary>
 public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {

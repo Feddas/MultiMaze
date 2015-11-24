@@ -57,11 +57,12 @@ namespace UnityStandardAssets.Vehicles.Ball
                     // ... add torque around the axis defined by the move direction.
                     m_Rigidbody.AddTorque(new Vector3(moveDirection.z, 0, -moveDirection.x) * m_MovePower);
                     break;
-                case ControlModeEnum.Drag:
+                case ControlModeEnum.Attract:
                     // Otherwise add force in the move direction.
                     m_Rigidbody.AddForce(moveDirection * m_MovePower);
                     break;
-                case ControlModeEnum.Path:
+                case ControlModeEnum.Trace:
+                    // TODO: only add force if at there is at least one segment to the drawn/traced line
                     break;
                 default:
                     break;

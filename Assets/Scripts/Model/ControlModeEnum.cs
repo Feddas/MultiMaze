@@ -5,6 +5,6 @@ public enum ControlModeEnum
 {
     None,
     Torque,
-    Drag,
-    Path,
+    Attract,
+    Trace,
 }

@@ -24,9 +24,15 @@ public class Settings : MonoBehaviour
         Application.LoadLevel("MazeGrowingTree");
     }
 
-    public void ModeDrag()
+    public void ModeAttract()
     {
-        PlayerPref.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Drag);
+        PlayerPref.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Attract);
+        Application.LoadLevel("MazeGrowingTree");
+    }
+
+    public void ModeTrace()
+    {
+        PlayerPref.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Trace);
         Application.LoadLevel("MazeGrowingTree");
     }
 }
