@@ -49,6 +49,7 @@ public class JoystickType : MonoBehaviour
                 joystickDrag.horizontalAxisName = horizontalAxisName + controllerPrefix;
                 joystickDrag.verticalAxisName = verticalAxisName + controllerPrefix;
                 joystickDrag.enabled = true;
+                joystickDrag.IsTraceMode = controlMode == ControlModeEnum.Trace;
                 break;
             case ControlModeEnum.None:
             default:

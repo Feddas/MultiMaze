@@ -11,6 +11,12 @@ public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public string horizontalAxisName { get; set; }
     public string verticalAxisName { get; set; }
 
+    /// <summary> Determines if the Trace control mode is used. If false, attract mode is used </summary>
+    public bool IsTraceMode { get; set; }
+
+    /// <summary> The linerenderer that draws the trace path for Trace control mode</summary>
+    public DrawPath DrawPathObj;
+
     float speedOfController = 100;
     bool useNonTouch;
     Vector3 m_StartPos;
@@ -110,10 +116,25 @@ public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public void OnPointerUp(PointerEventData data)
     {
         UpdateVirtualAxes(Vector3.zero);
+
+        if (IsTraceMode) // disable path tracing
+        {
+            DrawPathObj.TouchIndex = -1;
+        }
     }
 
     public void OnPointerDown(PointerEventData data)
     {
+        if (IsTraceMode)
+        {
+            if (data.pointerId != -1) // activate the draw path for this touch id
+                DrawPathObj.TouchIndex = data.pointerId;
+            else // allow a device to use non-touch pointers (pointers of index -1)
+                DrawPathObj.TouchIndex = 0;
+
+            //Debug.Log(" OnPointerDown" + data.pointerId + "DrawPathObj.TouchIndex" + DrawPathObj.TouchIndex);
+        }
+
         OnDrag(data); // Allow a tap and hold to move the joystick thumb
     }
 }

@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     private GameObject[] players;
     private Rigidbody[] playerRigidbody;
+    private DrawPath[] traceLineRenderer;
 
     public Animator UiInstructions;
     public Text RestartText;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         RestartText.text = "Hold here for a new maze";
+        traceLineRenderer = GameObject.FindObjectsOfType<DrawPath>();
         createPlayers();
         BeginGame();
         Instance = this;
@@ -38,6 +40,18 @@ public class GameManager : MonoBehaviour
         this.Delay(0, () => GameText.ShowText("First color to the Checkered Flag wins the game!"));
         UiInstructions.SetTrigger("FadeOut"); // Remove tutorial overlay
         gameState = GameState.Playing;
+    }
+
+    /// <summary> The traceLineRenderer can not access GameManager.cs or Ball.cs since it is compiled in "firstpass". so violate the pattern only a littel by linking it manually here. </summary>
+    private void linkBallTransform(GameObject player, string color)
+    {
+        for (int i = 0; i < traceLineRenderer.Length; i++)
+        {
+            if (traceLineRenderer[i].name.Contains(color))
+            {
+                traceLineRenderer[i].LinkedBall = player.transform;
+            }
+        }
     }
 
     private void createPlayers()
@@ -51,6 +65,7 @@ public class GameManager : MonoBehaviour
             players[i].name = playerColors[i].name + " Ball";
             players[i].GetComponent<UnityStandardAssets.Vehicles.Ball.BallUserControl>().SetBallMaterial(playerColors[i]);
             playerRigidbody[i] = players[i].GetComponent<Rigidbody>();
+            linkBallTransform(players[i], playerColors[i].name);
         }
     }
 
