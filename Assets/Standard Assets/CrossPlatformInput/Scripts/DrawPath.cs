@@ -31,28 +31,35 @@ public class DrawPath : MonoBehaviour
         }
     }
     private int _touchIndex;
-    
+
+    // http://answers.unity3d.com/questions/422186/remove-points-of-linerenderer.html
+    public List<Vector3> LinePositions { get; set; }
+
     public float SegmentSize = 0.5f;
     public Text DebugText;
-    public Shader LineShader;
+    public Material ColorFromMaterial;
     public Transform LinkedBall;
 
-    [SerializeField][Tooltip("use to manually set the TouchIndex")]
+    [SerializeField]
+    [Tooltip("use to manually set the TouchIndex")]
     private int startingTouchIndex = -1;
     private LineRenderer lineRenderer;
-    private List<Vector3> linePositions = new List<Vector3>(); // http://answers.unity3d.com/questions/422186/remove-points-of-linerenderer.html
 
     void Start()
     {
         TouchIndex = startingTouchIndex;
 
+        // determine color that will be used for the line
+        var fadeColor = ColorFromMaterial.color;
+        fadeColor.a = 0.5f;
+
+        // setup the line
         lineRenderer = this.GetComponent<LineRenderer>();
         //DebugText.text += " Line" + TouchIndex + " is " + lineRenderer.material.color;
-        lineRenderer.SetColors(lineRenderer.material.color, lineRenderer.material.color);
-        lineRenderer.material = new Material(LineShader);
-        //lineRenderer.material = new Material(Shader.Find("Particles/Additive"));  // this shader isn't found on Android
+        lineRenderer.SetColors(fadeColor, fadeColor);
+        //lineRenderer.material = new Material(Shader.Find("Mobile/Particles/Additive"));
         lineRenderer.SetWidth(0.1F, 0.2F);
-        
+
         StartCoroutine(MonitorDrag(null, onRelease));
     }
 
@@ -120,7 +127,7 @@ public class DrawPath : MonoBehaviour
         {
             case TouchPhase.Began:
                 //Debug.Log("Began=" + Input.mousePosition);
-                linePositions.Clear();
+                LinePositions.Clear();
                 AddPoint(touchPosition);
                 break;
             case TouchPhase.Moved:
@@ -150,30 +157,28 @@ public class DrawPath : MonoBehaviour
 
         // enable path drawing if the world position is close enough to the linked ball
         if (IsPlayerDrawing == false)
-            IsPlayerDrawing = isCursorInRange(newPoint, 3.65f);
+            IsPlayerDrawing = isCursorInRange(newPoint,
+                4 // height of the wall
+                - 0.4f // height of the middle of the ball
+                + 0.05f); // buffer area, half of one cell. allowing snap in anywhere within one cell of the ball
         if (IsPlayerDrawing == false)
             return;
 
         //if (linePositions.Count > 0)
         //    Debug.Log("AddPoint distance=" + linePositions[linePositions.Count - 1] + " and " + newPoint + " dist" + Vector3.Distance(linePositions[linePositions.Count - 1], newPoint) + " Seg" + SegmentSize + " cond" + (Vector3.Distance(linePositions[linePositions.Count - 1], newPoint) > SegmentSize));
-        
+
         // center the first vertex on the players ball
-        if (linePositions.Count == 0)
+        if (LinePositions.Count == 0)
         {
             newPoint = LinkedBall.position;
             newPoint.y = 4;
         }
 
         // add a new point to the line
-        if (linePositions.Count == 0 || isBeyondLastVertex(newPoint, SegmentSize))
+        if (LinePositions.Count == 0 || isBeyondLastVertex(newPoint, SegmentSize))
         {
-            linePositions.Add(newPoint);
-
-            lineRenderer.SetVertexCount(linePositions.Count);
-            for (int i = 0; i < linePositions.Count; i++)
-            {
-                lineRenderer.SetPosition(i, linePositions[i]);
-            }
+            LinePositions.Add(newPoint);
+            RedrawLine();
             //Debug.Log("AddPoint distance=" + Vector3.Distance(linePositions[linePositions.Count - 1], newPoint));
         }
         else
@@ -182,14 +187,26 @@ public class DrawPath : MonoBehaviour
         }
     }
 
+    public void RedrawLine()
+    {
+        if (lineRenderer == null || LinePositions == null)
+            return;
+
+        lineRenderer.SetVertexCount(LinePositions.Count);
+        for (int i = 0; i < LinePositions.Count; i++)
+        {
+            lineRenderer.SetPosition(i, LinePositions[i]);
+        }
+    }
+
     /// <summary>
     /// only add point if it's delta is at least SegmentSize from the last added point
     /// </summary>
     bool isBeyondLastVertex(Vector3 newPoint2, float segmentSize)
     {
-        float distance = Vector3.Distance(linePositions[linePositions.Count - 1], newPoint2);
+        float distance = Vector3.Distance(LinePositions[LinePositions.Count - 1], newPoint2);
 
-        if (linePositions.Count == 1) // handle snapping to center of the players ball causing extra distance from the cursor
+        if (LinePositions.Count == 1) // handle snapping to center of the players ball causing extra distance from the cursor
             return distance > (2 * SegmentSize);
         else
             return distance > SegmentSize;
@@ -205,8 +222,7 @@ public class DrawPath : MonoBehaviour
     private void onRelease()
     {
         //Debug.Log("released");
-
-        //isPlayerDrawing = false; // TODO: comment this line in when isPlayerDrawing is set to true by touching the cooresponding ball
+        TouchIndex = -1; // disable path drawing
     }
 
     //public Color c1 = Color.yellow;

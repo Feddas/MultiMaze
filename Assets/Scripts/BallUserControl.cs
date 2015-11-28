@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -6,6 +7,9 @@ namespace UnityStandardAssets.Vehicles.Ball
 {
     public class BallUserControl : MonoBehaviour
     {
+        /// <summary> only raised during the Trace control mode as the ball is following along a path </summary>
+        public event EventHandler<EventArgs> TraceLineChanged;
+
         ///// <summary>
         ///// sends the new color being changed to
         ///// </summary>
@@ -14,6 +18,14 @@ namespace UnityStandardAssets.Vehicles.Ball
         private Ball ball; // Reference to the ball controller.
 
         private Vector3 move; // the world-relative desired move direction, calculated from user input.
+
+        /// <summary> only used by Trace control mode </summary>
+        public List<Vector3> LinePositions
+        {
+            get { return _linePositions; }
+            set { _linePositions = value; }
+        }
+        private List<Vector3> _linePositions = new List<Vector3>();
 
         /// <summary> controllerPrefix is set via GameManager.cs createPlayers() </summary>
         private string controllerPrefix;
@@ -38,7 +50,7 @@ namespace UnityStandardAssets.Vehicles.Ball
                     move = fromAttract();
                     break;
                 case ControlModeEnum.Trace:
-                    // TODO: move = fromTrace();
+                    move = fromTracePath();
                     break;
                 case ControlModeEnum.None:
                 default:
@@ -74,6 +86,32 @@ namespace UnityStandardAssets.Vehicles.Ball
             result.y = 0; // don't make the ball jump
             //Debug.Log(ball.transform.position + " postion analogStick=>" + analogStick + " == " + result);
             return result;
+        }
+
+        private Vector3 fromTracePath()
+        {
+            // there's not enough line to follow
+            if (LinePositions == null || LinePositions.Count < 2)
+                return Vector3.zero;
+
+            // find the next position of the line relative to their balls location
+            var result = LinePositions[0] - ball.transform.position;
+            result.y = 0; // don't make the ball jump
+            //Debug.Log(ball.transform.position + " postion LinePositions[0]=>" + LinePositions[0] + " == " + result);
+
+            // consider the position reached and remove it from the drawn trace path line
+            if (result.magnitude < 0.5f)
+            {
+                LinePositions.RemoveAt(0);
+                OnTraceLineChanged(); // enables the drawn line reflects the ball moving along
+            }
+            return result;
+        }
+
+        private void OnTraceLineChanged()
+        {
+            if (this.TraceLineChanged != null)
+                this.TraceLineChanged(this, new EventArgs());
         }
 
         private void FixedUpdate()

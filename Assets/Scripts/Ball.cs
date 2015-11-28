@@ -62,7 +62,8 @@ namespace UnityStandardAssets.Vehicles.Ball
                     m_Rigidbody.AddForce(moveDirection * m_MovePower);
                     break;
                 case ControlModeEnum.Trace:
-                    // TODO: only add force if at there is at least one segment to the drawn/traced line
+                    // Otherwise add force along a players drawn path.
+                    m_Rigidbody.AddForce(moveDirection * m_MovePower);
                     break;
                 default:
                     break;

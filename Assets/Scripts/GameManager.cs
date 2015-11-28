@@ -42,14 +42,18 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Playing;
     }
 
-    /// <summary> The traceLineRenderer can not access GameManager.cs or Ball.cs since it is compiled in "firstpass". so violate the pattern only a littel by linking it manually here. </summary>
-    private void linkBallTransform(GameObject player, string color)
+    /// <summary> The trace control mode requires linking the ball up tighter with the controller so the ball can follow the path
+    /// The traceLineRenderer can not access GameManager.cs or Ball.cs since it is compiled in "firstpass". so violate the pattern only a littel by linking it manually here. </summary>
+    private void linkBallTransform(GameObject player, string color, UnityStandardAssets.Vehicles.Ball.BallUserControl ballMover)
     {
         for (int i = 0; i < traceLineRenderer.Length; i++)
         {
             if (traceLineRenderer[i].name.Contains(color))
             {
                 traceLineRenderer[i].LinkedBall = player.transform;
+                traceLineRenderer[i].LinePositions = ballMover.LinePositions;
+                System.Action redrawLine = traceLineRenderer[i].RedrawLine;
+                ballMover.TraceLineChanged += (s, e) => redrawLine();
             }
         }
     }
@@ -63,9 +67,11 @@ public class GameManager : MonoBehaviour
         {
             players[i] = Instantiate(BallPrefab);
             players[i].name = playerColors[i].name + " Ball";
-            players[i].GetComponent<UnityStandardAssets.Vehicles.Ball.BallUserControl>().SetBallMaterial(playerColors[i]);
             playerRigidbody[i] = players[i].GetComponent<Rigidbody>();
-            linkBallTransform(players[i], playerColors[i].name);
+
+            var ballMover = players[i].GetComponent<UnityStandardAssets.Vehicles.Ball.BallUserControl>();
+            ballMover.SetBallMaterial(playerColors[i]);
+            linkBallTransform(players[i], playerColors[i].name, ballMover);
         }
     }
 
@@ -171,6 +177,10 @@ public class GameManager : MonoBehaviour
 
             // insures the ball's are ready for a new game. Right now, this just clears ball trails.
             StartCoroutine(players[i].GetComponent<UnityStandardAssets.Vehicles.Ball.Ball>().ResetBall());
+
+            // ensure trace lines are zero'd
+            traceLineRenderer[i].LinePositions.Clear();
+            traceLineRenderer[i].RedrawLine();
         }
 
         // Shows the tutorial overlay for every new maze

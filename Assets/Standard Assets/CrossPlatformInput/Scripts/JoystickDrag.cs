@@ -116,11 +116,6 @@ public class JoystickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public void OnPointerUp(PointerEventData data)
     {
         UpdateVirtualAxes(Vector3.zero);
-
-        if (IsTraceMode) // disable path tracing
-        {
-            DrawPathObj.TouchIndex = -1;
-        }
     }
 
     public void OnPointerDown(PointerEventData data)
