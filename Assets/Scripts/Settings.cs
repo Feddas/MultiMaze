@@ -21,18 +21,18 @@ public class Settings : MonoBehaviour
     public void ModeTorque()
     {
         PlayerPref.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Torque);
-        Application.LoadLevel("MazeGrowingTree");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MazeGrowingTree", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     public void ModeAttract()
     {
         PlayerPref.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Attract);
-        Application.LoadLevel("MazeGrowingTree");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MazeGrowingTree", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     public void ModeTrace()
     {
         PlayerPref.SetInt(PlayerPrefEnum.ControlMode.ToString(), (int)ControlModeEnum.Trace);
-        Application.LoadLevel("MazeGrowingTree");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MazeGrowingTree", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 }

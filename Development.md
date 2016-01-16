@@ -1,5 +1,8 @@
 
 # to do AKA stuff you'll see happen with support
+- for line drawing mode, Double line segments.
+- for line drawing mode, don't allow traced line to go through walls. Similar to MAMBC game.
+- draw maze size depending on dpi & control mode.On 5 inch display and d-pad mode do 10x10, other modes do 5x5.
 - In finger twister, able to offset the analog stick so you can see the center of the icon as you drag.
 - Only 1 winner, right now if a second player gets to finish before gametime = 0 they become the winner.
 - Use TrailRenderer instead of trail of Quads if LineRender has better performance

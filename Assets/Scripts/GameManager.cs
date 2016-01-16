@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
             }
             else // go back to the settings page
             {
-                Application.LoadLevel("Settings");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Settings", UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }
     }

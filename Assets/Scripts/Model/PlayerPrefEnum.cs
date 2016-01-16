@@ -45,34 +45,21 @@ public static class PlayerPref
     {
         string key = PrefProperty.ToString();
 
-#if UNITY_WEBGL  // WebGL doesn't have PlayerPrefs, as of Unity5.1
-        if (PrefsFallback.ContainsKey(key))
-        {
-            return EnumConverter<T>.Convert(GetFallback<T>(key));
-        }
-        else
-        {
-            return defaultValue;
-        }
-#else
         if (PlayerPrefs.HasKey(key) == false)
             return PrefsFallback.ContainsKey(key) ? GetFallback<T>(key) : defaultValue;
 
         var type = typeof(T);
         if (type.IsEnum && Enum.GetUnderlyingType(type) == typeof(int))
         {
-            return EnumConverter<T>.Convert(PlayerPrefs.GetInt(key));
+            return (T)Enum.ToObject(typeof(T), PlayerPrefs.GetInt(key)); //http://stackoverflow.com/questions/29482/cast-int-to-enum-in-c-sharp
+            //return EnumConverter<T>.Convert(PlayerPrefs.GetInt(key));
             //return (T)(object)PlayerPrefs.GetInt(key);
         }
         throw new Exception("PlayerPref type " + type + " handling isn't implemented in Get<T>()");
-#endif
     }
 
     public static void SetInt(string key, int value)
     {
-#if UNITY_WEBGL  // WebGL doesn't have PlayerPrefs, as of Unity5.1
-        AddFallback<int>(key, value);
-#else
         try
         {
             PlayerPrefs.SetInt(key, value);
@@ -82,20 +69,24 @@ public static class PlayerPref
             AddFallback<int>(key, value);
             throw;
         }
-#endif
     }
 }
 
-static class EnumConverter<TEnum> where TEnum : struct, IConvertible
-{
-    public static readonly Func<long, TEnum> Convert = GenerateConverter();
 
-    static Func<long, TEnum> GenerateConverter()
-    {
-        var parameter = Expression.Parameter(typeof(long), "param");
-        var dynamicMethod = Expression.Lambda<Func<long, TEnum>>(
-            Expression.Convert(parameter, typeof(TEnum)),
-            parameter);
-        return dynamicMethod.Compile();
-    }
-}
+/// <summary>
+/// This doesn't work with WebGL because the dynamic code is Unsupported internal call for IL2CPP:DynamicMethod::create_dynamic_method - System.Reflection.Emit is not supported.
+/// </summary>
+/// <typeparam name="TEnum"></typeparam>
+//static class EnumConverter<TEnum> where TEnum : struct, IConvertible
+//{
+//    public static readonly Func<long, TEnum> Convert = GenerateConverter();
+
+//    static Func<long, TEnum> GenerateConverter()
+//    {
+//        var parameter = Expression.Parameter(typeof(long), "param");
+//        var dynamicMethod = Expression.Lambda<Func<long, TEnum>>(
+//            Expression.Convert(parameter, typeof(TEnum)),
+//            parameter);
+//        return dynamicMethod.Compile();
+//    }
+//}
