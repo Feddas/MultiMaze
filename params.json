@@ -1,0 +1,6 @@
+{
+  "name": "Multimaze",
+  "tagline": "Maze game for up to 4 people on a single device",
+  "body": "### Where to play\r\n\r\n- Use the <a href=\"https://play.google.com/store/apps/details?id=com.ShawnFeatherly.MultiMaze\">Android App</a> on an Android device.\r\n- Use WebGL to <a href=\"WebGL/\">play in your browser</a>.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
