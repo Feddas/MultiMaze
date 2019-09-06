@@ -3,12 +3,12 @@ We know everyone can't afford the $0.99 paid version. Never fear, we have option
 
 1. Get a pre-built copy from a pirate. Arrr! (may contain viruses)
 *or*
-2. Play the [WebGL version](https://googledrive.com/host/0B4HUoMvS4zzKfmVKekg0N1ZQTWdrdS01bUtJdkhxemxLYlI3WV9hcXRRMm9xMjFkRm9keDA/MultiMaze.html) (runs slow)
+2. Play the [WebGL version](http://shawn.featherly.net/MultiMaze/WebGL/) (runs slow)
 *or*
-3. Compile a copy using the source code. Here are the steps to building a complete version. Takes about 4 hours to do.
+3. Compile a copy using the source code. Here are the steps to building a complete version. Takes about 3 hours to do.
 
    1. [1/2 hr] Download and install the free version of Unity 5.x
-   2. [2 hr] Setup Unity to export to your device of choice. (Android requires installing the Android SDK)
+   2. [1 hr] Setup Unity to export to your device of choice. (Android requires installing the Android SDK)
    3. [1/2 hr] Download this source code from GitHub and make sure it runs in Unity
    4. (optional) fix code in the game for parts you think suck.
    5. [1/2 hr] Build for your device of choice.
